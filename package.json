@@ -1,0 +1,107 @@
+{
+  "name": "@capacitor-community/version-manager",
+  "version": "1.2.3",
+  "description": "🔥 Capacitor plugin for automated version management in Ionic projects with TypeScript support",
+  "type": "module",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "bin": {
+    "cap-version": "dist/cli/index.js"
+  },
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/",
+    "ios/Plugin/",
+    "CapacitorVersionManager.podspec"
+  ],
+  "author": "InfoArkitectura",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InfoArkitectura/capacitor-version-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/InfoArkitectura/capacitor-version-plugin/issues"
+  },
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "ionic",
+    "version",
+    "management",
+    "android",
+    "ios",
+    "trapeze",
+    "typescript"
+  ],
+  "scripts": {
+    "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
+    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS | xcpretty && cd ..",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
+    "verify:web": "npm run build",
+    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
+    "eslint": "eslint . --ext ts",
+    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
+    "swiftlint": "node-swiftlint",
+    "docgen": "docgen --api VersionManagerPlugin --output-readme README.md --output-json dist/docs.json",
+    "build": "npm run clean && node scripts/prepare-build.js && tsc && node scripts/fix-esm-imports.js && rollup -c rollup.config.js",
+    "clean": "rimraf ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "test": "jest",
+    "dev": "npm run build && npm run test"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/docgen": "^0.0.18",
+    "@capacitor/ios": "^6.0.0",
+    "@ionic/eslint-config": "^0.3.0",
+    "@ionic/prettier-config": "^1.0.1",
+    "@ionic/swiftlint-config": "^1.1.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.0",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "commander": "^10.0.0",
+    "eslint": "^8.36.0",
+    "jest": "^29.5.0",
+    "prettier": "~2.8.0",
+    "prettier-plugin-java": "~2.0.0",
+    "rimraf": "^4.4.0",
+    "rollup": "^3.19.0",
+    "swiftlint": "^1.0.1",
+    "ts-jest": "^29.1.0",
+    "typescript": "~4.9.0",
+    "yaml": "^2.2.1",
+    "fs-extra": "^11.1.1"
+  },
+  "peerDependencies": {
+    "@capacitor/core": "^6.0.0"
+  },
+  "prettier": "@ionic/prettier-config",
+  "swiftlint": "@ionic/swiftlint-config",
+  "eslintConfig": {
+    "extends": "@ionic/eslint-config/recommended"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.test.ts"
+    ]
+  }
+}
