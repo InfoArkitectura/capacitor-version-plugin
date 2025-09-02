@@ -133,6 +133,15 @@ program
     await cli.applyTrapeze(config, options);
   });
 
+program
+  .command('compare-stores')
+  .description('Compare local version with published store versions')
+  .option('--verbose', 'Show detailed comparison information')
+  .action(async (options) => {
+    const cli = new VersionManagerCLI();
+    await cli.compareStores(options);
+  });
+
 // Error handling
 program.exitOverride();
 

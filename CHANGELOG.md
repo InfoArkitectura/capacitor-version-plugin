@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- 🆕 **Store Version Comparison**: New `compare-stores` command to compare local versions with Google Play and App Store
+- ✅ **iTunes Search API Integration**: Automatic App Store version checking
+- ✅ **Google Play API Support**: Framework for Google Play Store version checking (requires google-services.json)
+- ✅ **Smart Version Validation**: Semantic version and build number comparison
+- ✅ **Publishing Readiness Check**: Validate if local version is ready for store submission
+- ✅ **Detailed Store Status**: Per-platform comparison results with clear error/warning messages
+- 📖 **Store Comparison Guide**: Comprehensive documentation for store API setup
+
+### Technical Details
+- Added `StoreComparison` class with comprehensive store version checking
+- Integrated iTunes Search API for public App Store version lookups
+- Added automatic app ID detection from Capacitor config and Android build files
+- Implemented robust error handling for store API failures
+- Added verbose mode for detailed comparison debugging
+
+## [1.2.3] - Previous Release
+
+### Added
 - Initial release of Capacitor Version Manager
 - Multi-platform version management (Android, iOS, Web)
 - CLI interface with comprehensive commands

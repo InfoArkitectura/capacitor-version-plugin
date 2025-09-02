@@ -103,6 +103,46 @@ npx cap-version check [options]
 Options:
 - `-v, --verbose`: Show detailed information
 
+### Compare with Store Versions 🆕
+```bash
+npx cap-version compare-stores [options]
+```
+
+Compare your local version with published store versions to ensure you can publish:
+
+Options:
+- `--verbose`: Show detailed comparison information
+
+**Features:**
+- ✅ **Check Google Play Store** (requires google-services.json)
+- ✅ **Check Apple App Store** (uses iTunes Search API)  
+- ✅ **Compare versions and build numbers**
+- ✅ **Validate publishing readiness**
+- ✅ **Show detailed status per platform**
+
+**Example output:**
+```
+🔍 Comparing versions with app stores...
+📱 Local Version: 2.1.4 (Build: 201040)
+
+🤖 Android (Google Play):
+   Store Version: 2.1.3 (Build: 201030)
+   Status: ✅ Ready to publish
+
+🍎 iOS (App Store):
+   Store Version: 2.1.2 (Build: 201020) 
+   Status: ✅ Ready to publish
+
+🎉 Ready to publish on all platforms!
+```
+
+**Setup Requirements:**
+- **Android**: Add `google-services.json` to enable Google Play API
+- **iOS**: Uses public iTunes Search API (no setup required)
+- **Auto-detection**: Automatically finds app IDs from your project files
+
+For detailed configuration instructions, see [STORE-COMPARISON-GUIDE.md](./STORE-COMPARISON-GUIDE.md).
+
 ### Show Package Info
 ```bash
 npx cap-version info [options]

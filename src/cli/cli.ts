@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as yaml from 'yaml';
 import type { PackageInfo } from '../definitions.js';
 import { VersionManager } from '../plugin.js';
+import { StoreComparison } from '../store-comparison.js';
 
 export class VersionManagerCLI {
   private configPath: string = './trapeze.config.yaml';
@@ -343,6 +344,77 @@ export class VersionManagerCLI {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('❌ Failed to get history:', errorMessage);
       throw error;
+    }
+  }
+
+  /**
+   * Compare local version with store versions
+   */
+  async compareStores(options: { verbose?: boolean }): Promise<void> {
+    try {
+      console.log('🔍 Comparing versions with app stores...');
+      console.log('='.repeat(50));
+      
+      const storeComparison = new StoreComparison();
+      const result = await storeComparison.compareWithStores();
+      
+      // Display local version
+      console.log(`📱 Local Version: ${result.localVersion} (Build: ${result.localBuild})`);
+      console.log('');
+      
+      // Display Android results
+      if (result.android) {
+        console.log('🤖 Android (Google Play):');
+        if (result.android.error) {
+          console.log(`   ❌ Error: ${result.android.error}`);
+        } else {
+          const status = result.android.isNewer ? '✅ Ready to publish' : '❌ Version too low';
+          console.log(`   Store Version: ${result.android.storeVersion} (Build: ${result.android.storeBuild})`);
+          console.log(`   Status: ${status}`);
+        }
+        console.log('');
+      }
+      
+      // Display iOS results
+      if (result.ios) {
+        console.log('🍎 iOS (App Store):');
+        if (result.ios.error) {
+          console.log(`   ❌ Error: ${result.ios.error}`);
+        } else {
+          const status = result.ios.isNewer ? '✅ Ready to publish' : '❌ Version too low';
+          console.log(`   Store Version: ${result.ios.storeVersion} (Build: ${result.ios.storeBuild})`);
+          console.log(`   Status: ${status}`);
+        }
+        console.log('');
+      }
+      
+      // Display overall status
+      if (result.canPublish) {
+        console.log('🎉 Ready to publish on all platforms!');
+      } else {
+        console.log('⚠️  Cannot publish - version conflicts detected');
+      }
+      
+      // Show warnings
+      if (result.warnings.length > 0) {
+        console.log('\n⚠️  Warnings:');
+        result.warnings.forEach(warning => console.log(`   • ${warning}`));
+      }
+      
+      // Show errors  
+      if (result.errors.length > 0) {
+        console.log('\n❌ Errors:');
+        result.errors.forEach(error => console.log(`   • ${error}`));
+      }
+      
+      if (options.verbose) {
+        console.log('\n🔧 Verbose Information:');
+        console.log('Raw comparison result:', JSON.stringify(result, null, 2));
+      }
+      
+    } catch (error) {
+      console.error('❌ Error comparing store versions:', error instanceof Error ? error.message : error);
+      process.exit(1);
     }
   }
 
